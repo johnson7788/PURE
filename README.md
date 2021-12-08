@@ -77,9 +77,9 @@ python run_entity.py \
     --do_eval --eval_test \
     --context_window 0 \
     --task scierc \
-    --data_dir ${scierc_dataset} \
+    --data_dir scierc_data/processed_data/json/ \
     --model allenai/scibert_scivocab_uncased \
-    --output_dir ${scierc_ent_model}
+    --output_dir scierc_models/ent-scib-ctx0/
 
 # 运行预训练好的完整关系模型
 python run_relation.py \
