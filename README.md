@@ -73,12 +73,12 @@ scierc_rel_model_approx=scierc_models/rel_approx-scib-ctx0/
 cd ..
 
 # 运行预训练好的实体模型，结果将被存储在 ${scierc_ent_model}/ent_pred_test.json
-python run_entity.py \
-    --do_eval --eval_test \
-    --context_window 0 \
-    --task scierc \
-    --data_dir scierc_data/processed_data/json/ \
-    --model allenai/scibert_scivocab_uncased \
+python run_entity.py 
+    --do_eval --eval_test 
+    --context_window 0 
+    --task scierc 
+    --data_dir scierc_data/processed_data/json/ 
+    --model allenai/scibert_scivocab_uncased 
     --output_dir scierc_models/ent-scib-ctx0/
 
 # 运行预训练好的完整关系模型
@@ -93,7 +93,7 @@ python run_relation.py \
   --output_dir ${scierc_rel_model}
   
 # 输出端到端的评估结果
-python run_eval.py --prediction_file ${scierc_rel_model}/predictions.json
+python run_eval.py --prediction_file scierc_models/rel-scib-ctx0/predictions.json
 
 # 运行预训练好的近似关系模型（有批次计算）。
 python run_relation_approx.py \
