@@ -1,6 +1,5 @@
 # PURE: Entity and Relation Extraction from Text
-
-This repository contains  (PyTorch) code and pre-trained models for PURE (the **P**rinceton **U**niversity **R**elation **E**xtraction system), described by the paper: [A Frustratingly Easy Approach for Entity and Relation Extraction](https://arxiv.org/pdf/2010.12812.pdf).
+这个repository包含（PyTorch）代码和PURE（the **P**rinceton **U**niversity **R**elation **E**xtraction系统）的预训练模型，由论文: [A Frustratingly Easy Approach for Entity and Relation Extraction](https://arxiv.org/pdf/2010.12812.pdf).
 
 ## Quick links
 * [Overview](#Overview)
@@ -21,59 +20,59 @@ This repository contains  (PyTorch) code and pre-trained models for PURE (the **
 * [Bugs or Questions?](#Bugs-or-questions)
 * [Citation](#Citation)
 
-## Overview
+## 概览
 ![](./figs/overview.png)
-In this work, we present a simple approach for entity and relation extraction. Our approach contains three conponents:
+在这项工作中，我们提出了一种简单的实体和关系抽取方法。我们的方法包含三个部分。
 
-1. The **entity model** takes a piece of text as input and predicts all the entities at once.
-2. The **relation model** considers every pair of entities independently by inserting typed entity markers, and predicts the relation type for each pair.
-3. The **approximation relation model** supports batch computations, which enables efficient inference for the relation model.
+1. 实体模型将一段文本作为输入，并一次性预测所有实体。
+2. 关系模型通过插入类型化的实体标记来独立考虑每一对实体，并预测每一对实体的关系类型。
+3. 近似关系模型支持批次计算，这使得关系模型的推理更加高效。
 
 Please find more details of this work in our [paper](https://arxiv.org/pdf/2010.12812.pdf).
 
 ## Setup
 
 ### Install dependencies
-Please install all the dependency packages using the following command:
+请使用以下命令安装所有的依赖包。
 ```
 pip install -r requirements.txt
 ```
 
 ### Download and preprocess the datasets
-Our experiments are based on three datasets: ACE04, ACE05, and SciERC. Please find the links and pre-processing below:
-* ACE04/ACE05: We use the preprocessing code from [DyGIE repo](https://github.com/luanyi/DyGIE/tree/master/preprocessing). Please follow the instructions to preprocess the ACE05 and ACE04 datasets.
-* SciERC: The preprocessed SciERC dataset can be downloaded in their project [website](http://nlp.cs.washington.edu/sciIE/).
+我们的实验是基于三个数据集的。ACE04, ACE05, 和SciERC。请在下面找到链接和预处理方法。
+* ACE04/ACE05：我们使用来自[DyGIE repo]（https://github.com/luanyi/DyGIE/tree/master/preprocessing）的预处理代码。请按照说明对ACE05和ACE04数据集进行预处理。
+* SciERC：预处理的SciERC数据集可以在他们的项目[网站]（http://nlp.cs.washington.edu/sciIE/）中下载。
 
 ## Quick Start
-The following commands can be used to download the preprocessed SciERC dataset and run our pre-trained models on SciERC.
+以下命令可用于下载预处理的SciERC数据集，并在SciERC上运行我们预训练的模型。
 
 ```bash
-# Download the SciERC dataset
+# 下载SciERC 数据集
 wget http://nlp.cs.washington.edu/sciIE/data/sciERC_processed.tar.gz
 mkdir scierc_data; tar -xf sciERC_processed.tar.gz -C scierc_data; rm -f sciERC_processed.tar.gz
 scierc_dataset=scierc_data/processed_data/json/
 
-# Download the pre-trained models (single-sentence)
+# 下载预训练好的模型（单句）。
 mkdir scierc_models; cd scierc_models
 
-# Download the pre-trained entity model
+# 下载预训练好的实体模型
 wget https://nlp.cs.princeton.edu/projects/pure/scierc_models/ent-scib-ctx0.zip
 unzip ent-scib-ctx0.zip; rm -f ent-scib-ctx0.zip
 scierc_ent_model=scierc_models/ent-scib-ctx0/
 
-# Download the pre-trained full relation model
+# 下载预训练好的完整关系模型
 wget https://nlp.cs.princeton.edu/projects/pure/scierc_models/rel-scib-ctx0.zip
 unzip rel-scib-ctx0.zip; rm -f rel-scib-ctx0.zip
 scierc_rel_model=scierc_models/rel-scib-ctx0/
 
-# Download the pre-trained approximation relation model
+# 下载预训练好的近似关系模型
 wget https://nlp.cs.princeton.edu/projects/pure/scierc_models/rel_approx-scib-ctx0.zip
 unzip rel_approx-scib-ctx0.zip; rm -f rel_approx-scib-ctx0.zip
 scierc_rel_model_approx=scierc_models/rel_approx-scib-ctx0/
 
 cd ..
 
-# Run the pre-trained entity model, the result will be stored in ${scierc_ent_model}/ent_pred_test.json
+# 运行预训练好的实体模型，结果将被存储在 ${scierc_ent_model}/ent_pred_test.json
 python run_entity.py \
     --do_eval --eval_test \
     --context_window 0 \
@@ -82,7 +81,7 @@ python run_entity.py \
     --model allenai/scibert_scivocab_uncased \
     --output_dir ${scierc_ent_model}
 
-# Run the pre-trained full relation model
+# 运行预训练好的完整关系模型
 python run_relation.py \
   --task scierc \
   --do_eval --eval_test \
@@ -93,10 +92,10 @@ python run_relation.py \
   --entity_output_dir ${scierc_ent_model} \
   --output_dir ${scierc_rel_model}
   
-# Output end-to-end evaluation results
+# 输出端到端的评估结果
 python run_eval.py --prediction_file ${scierc_rel_model}/predictions.json
 
-# Run the pre-trained approximation relation model (with batch computation)
+# 运行预训练好的近似关系模型（有批次计算）。
 python run_relation_approx.py \
   --task scierc \
   --do_eval --eval_test \
@@ -108,15 +107,16 @@ python run_relation_approx.py \
   --output_dir ${scierc_rel_model_approx} \
   --batch_computation
 
-# Output end-to-end evaluation results
+# 输出端到端的评估结果
 python run_eval.py --prediction_file ${scierc_rel_model_approx}/predictions.json
 ```
 
 ## Entity Model
 
-### Input data format for the entity model
+### 实体模型的输入数据格式
 
-The input data format of the entity model is JSONL. Each line of the input file contains one document in the following format.
+实体模型的输入数据格式是JSONL。输入文件的每一行都包含一个文件，格式如下。
+
 ```
 {
   # document ID (please make sure doc_key can be used to identify a certain document)
@@ -149,9 +149,9 @@ The input data format of the entity model is JSONL. Each line of the input file 
 ```
 
 ### Train/evaluate the entity model
+你可以使用`run_entity.py`和`--do_train`来训练一个实体模型，使用`--do_eval`来评估一个实体模型。
+一个训练命令模板如下： 
 
-You can use `run_entity.py` with `--do_train` to train an entity model and with `--do_eval` to evaluate an entity model.
-A trianing command template is as follow:
 ```bash
 python run_entity.py \
     --do_train --do_eval [--eval_test] \
@@ -164,17 +164,18 @@ python run_entity.py \
     --output_dir {directory of output files}
 ```
 Arguments:
-* `--learning_rate`: the learning rate for BERT encoder parameters.
-* `--task_learning_rate`: the learning rate for task-specific parameters, i.e., the classifier head after the encoder.
-* `--context_window`: the context window size used in the model. `0` means using no contexts. In our cross-sentence entity experiments, we use `--context_window 300` for BERT models and SciBERT models and use `--context_window 100` for ALBERT models.
-* `--model`: the base transformer model. We use `bert-base-uncased` and `albert-xxlarge-v1` for ACE04/ACE05 and use `allenai/scibert_scivocab_uncased` for SciERC.
-* `--eval_test`: whether evaluate on the test set or not.
+* `--learning_rate`: BERT编码器参数的学习率。
+* `--task_learning_rate`: 特定任务参数的学习率，即编码器之后的分类器头。
+* `--context_window`: 模型中使用的上下文窗口大小。`0`意味着不使用上下文。在我们的跨句子实体实验中，我们对BERT模型和SciBERT模型使用`--context_window 300`，对ALBERT模型使用`--context_window 100`。
+* `--model`:基础transformer模型。我们对ACE04/ACE05使用`bert-base-uncased`和`albert-xxlarge-v1`，对SciERC使用`allenai/scibert_scivocab_uncased`。
+* `--eval_test`: 是否在测试集上进行评估。
 
-The predictions of the entity model will be saved as a file (`ent_pred_dev.json`) in the `output_dir` directory. If you set `--eval_test`, the predictions (`ent_pred_test.json`) are on the test set. The prediction file of the entity model will be the input file of the relation model.
+实体模型的预测结果将被保存为一个文件（`ent_pred_dev.json`），在`output_dir`目录下。如果你设置了`--eval_test`，预测结果（`ent_pred_test.json`）将在测试集上。实体模型的预测文件将是关系模型的输入文件。
 
 ## Relation Model
-### Input data format for the relation model
-The input data format of the relation model is almost the same as that of the entity model, except that there is one more filed `."predicted_ner"` to store the predictions of the entity model.
+### 关系模型的输入数据格式
+关系模型的输入数据格式与实体模型的基本相同，只是多了一个".predicted_ner "文件，用于存储实体模型的预测结果。
+
 ```bash
 {
   "doc_key": "CNN_ENG_20030306_083604.6",
@@ -191,7 +192,8 @@ The input data format of the relation model is almost the same as that of the en
 ```
 
 ### Train/evaluate the relation model:
-You can use `run_relation.py` with `--do_train` to train a relation model and with `--do_eval` to evaluate a relation model. A trianing command template is as follow:
+你可以使用`run_relation.py`和`--do_train`来训练一个关系模型，使用`--do_eval`来评估一个关系模型。一个训练命令模板如下。
+
 ```bash
 python run_relation.py \
   --task {ace05 | ace04 | scierc} \
@@ -212,15 +214,16 @@ Aruguments:
 * `--eval_with_gold`: whether evaluate the model with the gold entities provided.
 * `--entity_output_dir`: the output directory of the entity model. The prediction files (`ent_pred_dev.json` or `ent_pred_test.json`) of the entity model should be in this directory.
 
-The prediction results will be stored in the file `predictions.json` in the folder `output_dir`, and the format will be almost the same with the output file from the entity model, except that there is one more field `"predicted_relations"` for each document.
+预测结果将存储在`output_dir`文件夹下的`predictions.json`文件中，其格式与实体模型的输出文件几乎相同，只是每个文档多了一个字段`"predicted_relations"`。
 
-You can run the evaluation script to output the end-to-end performance  (`Ent`, `Rel`, and `Rel+`) of the predictions.
+你可以运行评估脚本来输出预测的端到端性能（`Ent`，`Rel`，和`Rel+`）。
+
 ```bash
 python run_eval.py --prediction_file {path to output_dir}/predictions.json
 ```
 
 ### Approximation relation model
-You can use the following command to train an approximation model.
+你可以使用以下命令来训练一个近似模型。
 ```bash
 python run_relation_approx.py \
  --task {ace05 | ace04 | scierc} \
@@ -238,7 +241,7 @@ python run_relation_approx.py \
  --output_dir {directory of output files}
 ```
 
-Once you have a trained approximation model, you can enable efficient batch computation during inference with `--batch_computation`:
+一旦你有了训练好的近似模型，你可以在推理过程中用`--batch_computation`启用高效的批次计算。
 ```bash
 python run_relation_approx.py \
  --task {ace05 | ace04 | scierc} \
@@ -252,12 +255,11 @@ python run_relation_approx.py \
  --output_dir {directory of output files} \
  --batch_computation
 ```
-*Note*: the current code does not support approximation models based on ALBERT.
+*注意*：目前的代码不支持基于ALBERT的近似模型。
 
 ## Pre-trained Models
-We release our pre-trained entity models and relation models for ACE05 and SciERC datasets.
-
-*Note*: the performance of the pre-trained models might be slightly different from the reported numbers in the paper, since we reported the average numbers based on multiple runs.
+我们发布了针对ACE05和SciERC数据集的预训练的实体模型和关系模型。
+*注意*：预训练模型的性能可能与论文中的报告数字略有不同，因为我们报告的是基于多次运行的平均数字。
 
 
 ### Pre-trained models for ACE05
