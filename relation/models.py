@@ -79,7 +79,7 @@ class BertForRelationApprox(BertPreTrainedModel):
         attention_mask: [batch_size, from_seq_length, to_seq_length]
         """
         batch_size = input_ids.size(0)
-        outputs = self.bert(input_ids, token_type_ids=token_type_ids, attention_mask=attention_mask, output_hidden_states=False, output_attentions=False, position_ids=input_position)
+        outputs = self.bert(input_ids, token_type_ids=token_type_ids, attention_mask=attention_mask, output_hidden_states=False, output_attentions=False, position_ids=input_position, return_dict=False)
         sequence_output = outputs[0]
 
         sub_ids = sub_obj_ids[:, :, 0].view(batch_size, -1)
@@ -119,7 +119,7 @@ class AlbertForRelationApprox(BertPreTrainedModel):
 
     def forward(self, input_ids, token_type_ids=None, attention_mask=None, labels=None, sub_obj_ids=None, sub_obj_masks=None, input_position=None):
         batch_size = input_ids.size(0)
-        outputs = self.albert(input_ids, token_type_ids=token_type_ids, attention_mask=attention_mask, output_hidden_states=False, output_attentions=False, position_ids=input_position)
+        outputs = self.albert(input_ids, token_type_ids=token_type_ids, attention_mask=attention_mask, output_hidden_states=False, output_attentions=False, position_ids=input_position,return_dict=False)
         sequence_output = outputs[0]
 
         sub_ids = sub_obj_ids[:, :, 0].view(batch_size, -1)
