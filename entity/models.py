@@ -178,12 +178,12 @@ class EntityModel():
 
     def move_model_to_cuda(self):
         if not torch.cuda.is_available():
-            logger.error('No CUDA found!')
-            exit(-1)
-        logger.info('Moving to CUDA...')
-        self._model_device = 'cuda'
-        self.bert_model.cuda()
-        logger.info('# GPUs = %d'%(torch.cuda.device_count()))
+            logger.error('注意没有GPU')
+        else:
+            logger.info('移动模型到GPU')
+            self._model_device = 'cuda'
+            self.bert_model.cuda()
+            logger.info('# GPUs = %d'%(torch.cuda.device_count()))
         if torch.cuda.device_count() > 1:
             self.bert_model = torch.nn.DataParallel(self.bert_model)
 
