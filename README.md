@@ -81,7 +81,7 @@ python run_entity.py
     --model allenai/scibert_scivocab_uncased 
     --output_dir scierc_models/ent-scib-ctx0/
 
-# 运行预训练好的完整关系模型
+# 运行预训练好的完整关系模型, 
 python run_relation.py 
   --task scierc 
   --do_eval --eval_test 
