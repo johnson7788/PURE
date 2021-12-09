@@ -164,7 +164,7 @@ class EntityModel():
             bert_model_name = str(args.bert_model_dir) + '/'
             # vocab_name = bert_model_name + 'vocab.txt'
             vocab_name = bert_model_name
-            logger.info('Loading BERT model from {}'.format(bert_model_name))
+            logger.info('开始加载BERT模型： {}'.format(bert_model_name))
 
         if args.use_albert:
             self.tokenizer = AlbertTokenizer.from_pretrained(vocab_name)
