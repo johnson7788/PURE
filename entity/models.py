@@ -38,7 +38,7 @@ class BertForEntity(BertPreTrainedModel):
         self.init_weights()
 
     def _get_span_embeddings(self, input_ids, spans, token_type_ids=None, attention_mask=None):
-        sequence_output, pooled_output = self.bert(input_ids=input_ids, token_type_ids=token_type_ids, attention_mask=attention_mask)
+        sequence_output, pooled_output = self.bert(input_ids=input_ids, token_type_ids=token_type_ids, attention_mask=attention_mask, return_dict=False)
         
         sequence_output = self.hidden_dropout(sequence_output)
 
@@ -105,7 +105,7 @@ class AlbertForEntity(AlbertPreTrainedModel):
         self.init_weights()
 
     def _get_span_embeddings(self, input_ids, spans, token_type_ids=None, attention_mask=None):
-        sequence_output, pooled_output = self.albert(input_ids=input_ids, token_type_ids=token_type_ids, attention_mask=attention_mask)
+        sequence_output, pooled_output = self.albert(input_ids=input_ids, token_type_ids=token_type_ids, attention_mask=attention_mask, return_dict=False)
         
         sequence_output = self.hidden_dropout(sequence_output)
 
