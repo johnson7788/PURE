@@ -39,7 +39,7 @@ def overlap(s1, s2):
 
 def convert_dataset_to_samples(dataset, max_span_length, ner_label2id=None, context_window=0, split=0):
     """
-    Extract sentences and gold entities from a dataset
+    从数据集中提取句子和glod实体
     """
     # split: split the data into train and dev (for ACE04)
     # split == 0: don't split

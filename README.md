@@ -91,24 +91,57 @@ python run_relation.py
   --max_seq_length 128 
   --entity_output_dir scierc_models/ent-scib-ctx0/
   --output_dir scierc_models/rel-scib-ctx0/
+
+12/10/2021 09:36:03 - INFO - __main__ - ***** Test *****
+12/10/2021 09:36:03 - INFO - __main__ -   Num examples = 5092
+12/10/2021 09:36:03 - INFO - __main__ -   Batch size = 8
+12/10/2021 09:36:14 - INFO - __main__ - ***** Eval results *****
+12/10/2021 09:36:14 - INFO - __main__ -   accuracy = 0.8750981932443048
+12/10/2021 09:36:14 - INFO - __main__ -   eval_loss = 0.5204750190060455
+12/10/2021 09:36:14 - INFO - __main__ -   f1 = 0.4865145228215767
+12/10/2021 09:36:14 - INFO - __main__ -   n_correct = 469
+12/10/2021 09:36:14 - INFO - __main__ -   n_gold = 974
+12/10/2021 09:36:14 - INFO - __main__ -   n_pred = 954
+12/10/2021 09:36:14 - INFO - __main__ -   precision = 0.4916142557651992
+12/10/2021 09:36:14 - INFO - __main__ -   recall = 0.4815195071868583
+12/10/2021 09:36:14 - INFO - __main__ -   task_f1 = 0.5818858560794045
+12/10/2021 09:36:14 - INFO - __main__ -   task_ngold = 658
+12/10/2021 09:36:14 - INFO - __main__ -   task_recall = 0.7127659574468085
+12/10/2021 09:36:14 - INFO - __main__ - *** Evaluation Results ***
+12/10/2021 09:36:14 - INFO - __main__ -   accuracy = 0.8750981932443048
+12/10/2021 09:36:14 - INFO - __main__ -   eval_loss = 0.5204750190060455
+12/10/2021 09:36:14 - INFO - __main__ -   f1 = 0.4865145228215767
+12/10/2021 09:36:14 - INFO - __main__ -   n_correct = 469
+12/10/2021 09:36:14 - INFO - __main__ -   n_gold = 974
+12/10/2021 09:36:14 - INFO - __main__ -   n_pred = 954
+12/10/2021 09:36:14 - INFO - __main__ -   precision = 0.4916142557651992
+12/10/2021 09:36:14 - INFO - __main__ -   recall = 0.4815195071868583
+12/10/2021 09:36:14 - INFO - __main__ -   task_f1 = 0.5818858560794045
+12/10/2021 09:36:14 - INFO - __main__ -   task_ngold = 658
+12/10/2021 09:36:14 - INFO - __main__ -   task_recall = 0.7127659574468085
+
   
 # 输出端到端的评估结果
 python run_eval.py --prediction_file scierc_models/rel-scib-ctx0/predictions.json
+NER - P: 0.667857, R: 0.665875, F1: 0.666865
+REL - P: 0.491614, R: 0.481520, F1: 0.486515
+REL (strict) - P: 0.360587, R: 0.353183, F1: 0.356846
 
-# 运行预训练好的近似关系模型（有批次计算）。
-python run_relation_approx.py \
-  --task scierc \
-  --do_eval --eval_test \
-  --model allenai/scibert_scivocab_uncased \
-  --do_lower_case \
-  --context_window 0\
-  --max_seq_length 250 \
-  --entity_output_dir ${scierc_ent_model} \
-  --output_dir ${scierc_rel_model_approx} \
+
+# 利用预测的实体文件，和运行预训练好的近似关系模型（有批次计算）计算关系。
+python run_relation_approx.py 
+  --task scierc 
+  --do_eval --eval_test 
+  --model allenai/scibert_scivocab_uncased 
+  --do_lower_case 
+  --context_window 0
+  --max_seq_length 250 
+  --entity_output_dir scierc_models/ent-scib-ctx0/ 
+  --output_dir scierc_models/rel_approx-scib-ctx0/ 
   --batch_computation
 
-# 输出端到端的评估结果
-python run_eval.py --prediction_file ${scierc_rel_model_approx}/predictions.json
+# 近似关系模型的输出端到端的评估结果
+python run_eval.py --prediction_file scierc_models/rel_approx-scib-ctx0/predictions.json
 ```
 
 ## Entity Model

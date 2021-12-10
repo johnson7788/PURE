@@ -23,7 +23,7 @@ def generate_relation_data(entity_data, use_gold=False, context_window=0):
     Prepare data for the relation model
     If training: set use_gold = True
     """
-    logger.info('Generate relation data from %s'%(entity_data))
+    logger.info('从这个文件中 %s 生成关系数据'%(entity_data))
     data = Dataset(entity_data)
 
     nner, nrel = 0, 0

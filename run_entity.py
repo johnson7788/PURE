@@ -75,9 +75,9 @@ def output_ner_predictions(model, batches, dataset, output_file):
 
 def evaluate(model, batches, tot_gold):
     """
-    Evaluate the entity model
+    评估实体识别模型
     """
-    logger.info('Evaluating...')
+    logger.info('开始评估实体识别模型')
     c_time = time.time()
     cor = 0
     tot_pred = 0
@@ -98,7 +98,7 @@ def evaluate(model, batches, tot_gold):
                     tot_pred += 1
                    
     acc = l_cor / l_tot
-    logger.info('Accuracy: %5f'%acc)
+    logger.info('准确率: %5f'%acc)
     logger.info('Cor: %d, Pred TOT: %d, Gold TOT: %d'%(cor, tot_pred, tot_gold))
     p = cor / tot_pred if cor > 0 else 0.0
     r = cor / tot_gold if cor > 0 else 0.0
